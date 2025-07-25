@@ -1,0 +1,197 @@
+<!DOCTYPE html>
+<html lang="pt-BR">
+<head>
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1.0"/>
+  <title>Mensagem de Bom Dia</title>
+  <link href="https://fonts.googleapis.com/css2?family=Rubik&family=Playfair+Display:wght@500&display=swap" rel="stylesheet">
+  <style>
+    body {
+      font-family: 'Rubik', sans-serif;
+      margin: 0;
+      padding: 0;
+      background-image: url('https://images.stockcake.com/public/a/e/2/ae2325da-1483-4f88-aad1-6580c590bcba_large/sunrise-sunflower-field-stockcake.jpg');
+      background-size: cover;
+      background-position: center;
+      background-attachment: fixed;
+      color: #fff;
+    }
+
+    .overlay {
+      background: rgba(0, 0, 0, 0.6);
+      min-height: 100vh;
+      padding: 40px 20px;
+      display: flex;
+      align-items: center;
+      justify-content: center;
+    }
+
+    .container {
+      max-width: 700px;
+      background: rgba(255, 255, 255, 0.1);
+      padding: 30px 25px;
+      border-radius: 15px;
+      text-align: center;
+      box-shadow: 0 4px 20px rgba(0, 0, 0, 0.4);
+    }
+
+    h1 {
+      font-size: 2.6em;
+      margin-bottom: 25px;
+      color: #ffeb3b;
+    }
+
+    .mensagem-destaque {
+      font-family: 'Playfair Display', serif;
+      font-size: 1.8em;
+      line-height: 1.8;
+      margin: 30px 0;
+      background: rgba(255, 255, 255, 0.12);
+      padding: 30px;
+      border-radius: 12px;
+      animation: fadeIn 1.2s ease-in-out;
+      box-shadow: 0 0 14px #ffc107cc;
+    }
+
+    @keyframes fadeIn {
+      from { opacity: 0; transform: translateY(20px); }
+      to { opacity: 1; transform: translateY(0); }
+    }
+
+    .contexto {
+      font-size: 1em;
+      margin-top: 30px;
+      color: #dfe6e9;
+    }
+
+    input[type="text"] {
+      width: 90%;
+      padding: 12px;
+      margin-bottom: 20px;
+      border: none;
+      border-radius: 8px;
+      font-size: 1em;
+    }
+
+    button {
+      padding: 12px 25px;
+      background: #00bfa5;
+      border: none;
+      color: white;
+      border-radius: 8px;
+      cursor: pointer;
+      font-weight: bold;
+      font-size: 1em;
+    }
+
+    button:hover {
+      background: #008e76;
+    }
+
+    #linkGerado {
+      margin-top: 20px;
+      word-break: break-word;
+      color: #aed581;
+    }
+
+    #botaoWhatsapp {
+      display: none;
+      margin-top: 20px;
+      padding: 12px 20px;
+      background: #25D366;
+      color: white;
+      text-decoration: none;
+      border-radius: 8px;
+      font-weight: bold;
+      display: inline-block;
+    }
+
+    #previsualizacao {
+      display: none;
+      margin-top: 30px;
+    }
+
+    @media (max-width: 600px) {
+      .mensagem-destaque {
+        font-size: 1.4em;
+      }
+    }
+  </style>
+</head>
+<body>
+  <div class="overlay">
+    <div class="container">
+      <h1>🌻 Mensagem de Bom Dia</h1>
+
+      <div id="areaMensagem" style="display: none;">
+        <p id="mensagem" class="mensagem-destaque"></p>
+      </div>
+
+      <div id="areaFormulario">
+        <input type="text" id="nomeDestinatario" placeholder="Nome de quem vai receber a mensagem">
+        <input type="text" id="nomeRemetente" placeholder="Seu nome (quem está enviando)">
+        <br />
+        <button onclick="gerarLink()">Gerar link</button>
+        <p id="linkGerado"></p>
+        <a id="botaoWhatsapp" target="_blank">📤 Compartilhar no WhatsApp</a>
+
+        <div id="previsualizacao">
+          <h2 style="color: #ffd54f; margin-top: 40px;">Pré-visualização da mensagem:</h2>
+          <p id="previewTexto" class="mensagem-destaque"></p>
+        </div>
+      </div>
+
+      <p class="contexto">
+        Crie uma mensagem personalizada para desejar um lindo dia a alguém especial.  
+        Digite o nome da pessoa e o seu, veja a prévia e compartilhe com carinho. ☀️💛
+      </p>
+    </div>
+  </div>
+
+  <script>
+    function getParametroURL(nome) {
+      const params = new URLSearchParams(window.location.search);
+      return params.get(nome);
+    }
+
+    function gerarLink() {
+      const nomeDestinatario = document.getElementById("nomeDestinatario").value.trim();
+      const nomeRemetente = document.getElementById("nomeRemetente").value.trim();
+
+      if (!nomeDestinatario || !nomeRemetente) {
+        alert("Preencha os dois nomes para gerar a mensagem.");
+        return;
+      }
+
+      const link = `${window.location.origin}${window.location.pathname}?nome=${encodeURIComponent(nomeDestinatario)}&de=${encodeURIComponent(nomeRemetente)}`;
+      document.getElementById("linkGerado").innerHTML = `<a href="${link}" target="_blank">${link}</a>`;
+
+      const mensagem = `${nomeRemetente} preparou uma linda mensagem de bom dia para você:
+
+${link}`;
+      const whatsappLink = "https://wa.me/?text=" + encodeURIComponent(mensagem);
+
+      const botao = document.getElementById("botaoWhatsapp");
+      botao.href = whatsappLink;
+      botao.style.display = "inline-block";
+
+      const previewTexto = `☀️ ${nomeRemetente} enviou esta mensagem para você, ${nomeDestinatario}:\n\nBom dia, ${nomeDestinatario}! Que seu dia seja repleto de luz, alegria e muitas conquistas.\n\nCom carinho, ${nomeRemetente}. 💛`;
+      document.getElementById("previewTexto").innerText = previewTexto;
+      document.getElementById("previsualizacao").style.display = "block";
+    }
+
+    const nomeDestinatarioURL = getParametroURL("nome");
+    const nomeRemetenteURL = getParametroURL("de");
+    if (nomeDestinatarioURL && nomeRemetenteURL) {
+      const nomeDestinatario = decodeURIComponent(nomeDestinatarioURL);
+      const nomeRemetente = decodeURIComponent(nomeRemetenteURL);
+      const areaMensagem = document.getElementById("areaMensagem");
+
+      const mensagem = `☀️ ${nomeRemetente} enviou esta mensagem para você, ${nomeDestinatario}:\n\nBom dia, ${nomeDestinatario}! Que seu dia seja repleto de luz, alegria e muitas conquistas.\n\nCom carinho, ${nomeRemetente}. 💛`;
+
+      areaMensagem.style.display = "block";
+      document.getElementById("mensagem").innerText = mensagem;
+    }
+  </script>
+</body>
+</html>
