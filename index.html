@@ -140,11 +140,11 @@
         <button onclick="reiniciar()" class="botao-link botao-alterar">✏️ Trocar nomes</button>
       </div>
 
-      <!-- Banner afiliado -->
-      <div id="bannerAfiliado" style="margin-top: 30px; display: none;">
-        <a href="https://go.hotmart.com/P101019526K" target="_blank">
-          <img src="afiliado.png" alt="Banner Afiliado" style="width: 100%; max-width: 100%; border-radius: 10px; box-shadow: 0 0 12px rgba(0,0,0,0.3);">
-        </a>
+      <div id="cta" style="display:none; margin-top: 20px;">
+        <p class="contexto">
+          Quer criar uma mensagem personalizada para alguém?<br>
+          <a href="/" style="color: #ffeb3b;">Clique aqui</a> 🌞
+        </p>
       </div>
 
       <p class="contexto">
@@ -168,20 +168,47 @@
       document.getElementById("mensagemGerada").innerText = mensagem;
       document.getElementById("formulario").style.display = "none";
       document.getElementById("resultado").style.display = "block";
-      document.getElementById("bannerAfiliado").style.display = "block";
 
-      const textoWhatsapp = `${mensagem}\n\n👉 Quer criar uma mensagem personalizada para alguém? Acesse: https://mensagensdobem.site`;
+      const urlBase = window.location.origin;
+      const urlCompleta = `${urlBase}?para=${encodeURIComponent(nomeDestinatario)}&de=${encodeURIComponent(nomeRemetente)}`;
+
+      const textoWhatsapp = `${nomeRemetente} enviou uma mensagem de bom dia especial para você! \n\nToque para ver: ${urlCompleta}`;
       const whatsappLink = `https://wa.me/?text=${encodeURIComponent(textoWhatsapp)}`;
+
       document.getElementById("botaoWhatsapp").href = whatsappLink;
     }
 
     function reiniciar() {
-      document.getElementById("nomeDestinatario").value = "";
-      document.getElementById("nomeRemetente").value = "";
-      document.getElementById("formulario").style.display = "block";
-      document.getElementById("resultado").style.display = "none";
-      document.getElementById("bannerAfiliado").style.display = "none";
+      window.location.href = "/";
+    }
+
+    // Exibe mensagem se tiver parâmetros na URL
+    window.onload = function () {
+      const urlParams = new URLSearchParams(window.location.search);
+      const para = urlParams.get('para');
+      const de = urlParams.get('de');
+
+      if (para && de) {
+        const mensagem = `☀️ Bom dia, ${para}!\n\nDesejo que seu dia seja repleto de paz, alegria e bênçãos. Que cada momento de hoje seja iluminado com esperança e sorrisos sinceros.\n\nCom carinho,\n${de} 🌻`;
+
+        document.getElementById("formulario").style.display = "none";
+        document.getElementById("resultado").style.display = "block";
+        document.getElementById("mensagemGerada").innerText = mensagem;
+        document.getElementById("cta").style.display = "block";
+      }
     }
   </script>
+
+<!-- Banner afiliado fixo no canto inferior direito -->
+<div id="bannerFixo" style="position: fixed; bottom: 20px; right: 20px; width: 120px; z-index: 9999; text-align: center;">
+  <a href="https://go.hotmart.com/P101019526K" target="_blank" style="text-decoration: none;">
+    <img src="afiliado.png" alt="Banner Afiliado" style="width: 100%; border-radius: 8px; box-shadow: 0 0 8px rgba(0,0,0,0.4);">
+    <div style="margin-top: 6px; background: #25D366; color: white; padding: 4px 6px; border-radius: 6px; font-size: 0.8em;">
+      Saiba mais
+    </div>
+  </a>
+</div>
+
+
 </body>
 </html>
