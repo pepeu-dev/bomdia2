@@ -14,12 +14,11 @@
       background-size: cover;
       background-position: center;
       background-attachment: fixed;
-      background-repeat: no-repeat;
       color: #fff;
     }
 
     .overlay {
-      background: rgba(0, 0, 0, 0.6);
+      background: rgba(0, 0, 0, 0.75);
       min-height: 100vh;
       padding: 40px 20px;
       display: flex;
@@ -44,8 +43,8 @@
 
     .mensagem-destaque {
       font-family: 'Playfair Display', serif;
-      font-size: 1.8em;
-      line-height: 1.8;
+      font-size: 1.6em;
+      line-height: 1.6;
       margin: 30px 0;
       background: rgba(255, 255, 255, 0.1);
       padding: 30px;
@@ -89,22 +88,29 @@
       background: #008e76;
     }
 
-    #linkGerado {
-      margin-top: 20px;
-      word-break: break-word;
-      color: #aed581;
-    }
-
     #botaoWhatsapp {
       display: none;
       margin-top: 20px;
-      padding: 12px 20px;
+      padding: 14px 24px;
       background: #25D366;
       color: white;
       text-decoration: none;
-      border-radius: 8px;
+      border-radius: 10px;
       font-weight: bold;
+      font-size: 1.1em;
       display: inline-block;
+    }
+
+    .shake {
+      animation: shake 0.6s ease-in-out 2;
+    }
+
+    @keyframes shake {
+      0% { transform: translateX(0); }
+      25% { transform: translateX(-5px); }
+      50% { transform: translateX(5px); }
+      75% { transform: translateX(-5px); }
+      100% { transform: translateX(0); }
     }
 
     #previsualizacao {
@@ -126,17 +132,13 @@
 
       <div id="areaMensagem" style="display: none;">
         <p id="mensagem" class="mensagem-destaque"></p>
-        <p style="margin-top: 30px; font-size: 1.1em; color: #ffe082;">
-          ✨ Você também pode enviar uma mensagem especial de bom dia! Basta preencher seu nome abaixo 👇
-        </p>
       </div>
 
       <div id="areaFormulario">
-        <input type="text" id="nomeDestinatario" placeholder="Nome da pessoa que vai receber">
+        <input type="text" id="nomeDestinatario" placeholder="Nome de quem vai receber">
         <input type="text" id="nomeRemetente" placeholder="Seu nome (quem está enviando)">
         <br />
-        <button onclick="gerarLink()">Gerar link</button>
-        <p id="linkGerado"></p>
+        <button onclick="gerarLink()">Gerar mensagem</button>
         <a id="botaoWhatsapp" target="_blank">📤 Compartilhar no WhatsApp</a>
 
         <div id="previsualizacao">
@@ -146,7 +148,7 @@
       </div>
 
       <p class="contexto">
-        Comece o dia com carinho: envie uma mensagem personalizada de bom dia e compartilhe boas energias ☀️🌻
+        Envie uma mensagem positiva para alguém especial e ajude a espalhar bons sentimentos logo pela manhã. 🌞🌻
       </p>
     </div>
   </div>
@@ -167,22 +169,19 @@
       }
 
       const link = `${window.location.origin}${window.location.pathname}?nome=${encodeURIComponent(nomeDestino)}&de=${encodeURIComponent(nomeRemetente)}`;
-      document.getElementById("linkGerado").innerHTML = `<a href="${link}" target="_blank">${link}</a>`;
-
-      const mensagem = `${nomeRemetente} preparou uma mensagem cheia de luz para você:
-
-${link}`;
+      const mensagem = `${nomeRemetente} preparou com carinho esta mensagem especial de bom dia para você:\n\n${link}`;
       const whatsappLink = "https://wa.me/?text=" + encodeURIComponent(mensagem);
 
       const botao = document.getElementById("botaoWhatsapp");
       botao.href = whatsappLink;
       botao.style.display = "inline-block";
 
-      const previewTexto = `☀️ ${nomeRemetente} enviou esta mensagem para você, ${nomeDestino}:
+      // Efeito de destaque
+      botao.classList.remove("shake");
+      void botao.offsetWidth;
+      botao.classList.add("shake");
 
-Bom dia, ${nomeDestino}! Que sua manhã seja iluminada, seu coração tranquilo e seu dia repleto de alegrias. Que Deus abençoe cada passo seu hoje.
-
-Com carinho, ${nomeRemetente}.`;
+      const previewTexto = `☀️ ${nomeRemetente} enviou esta mensagem para você, ${nomeDestino}:\n\nQue seu dia seja cheio de alegria, luz e coisas boas! Que nunca falte paz, amor e esperança no seu caminho. 🌻\n\nCom carinho, ${nomeRemetente}.`;
       document.getElementById("previewTexto").innerText = previewTexto;
       document.getElementById("previsualizacao").style.display = "block";
     }
@@ -190,15 +189,11 @@ Com carinho, ${nomeRemetente}.`;
     const nomeURL = getParametroURL("nome");
     const deURL = getParametroURL("de");
     if (nomeURL && deURL) {
-      const nomeDestino = decodeURIComponent(nomeURL);
-      const nomeRemetente = decodeURIComponent(deURL);
+      const nome = decodeURIComponent(nomeURL);
+      const de = decodeURIComponent(deURL);
       const areaMensagem = document.getElementById("areaMensagem");
 
-      const mensagem = `☀️ ${nomeRemetente} enviou esta mensagem para você, ${nomeDestino}:
-
-Bom dia, ${nomeDestino}! Que sua manhã seja iluminada, seu coração tranquilo e seu dia repleto de alegrias. Que Deus abençoe cada passo seu hoje.
-
-Com carinho, ${nomeRemetente}.`;
+      const mensagem = `☀️ ${de} enviou esta mensagem para você, ${nome}:\n\nQue seu dia seja cheio de alegria, luz e coisas boas! Que nunca falte paz, amor e esperança no seu caminho. 🌻\n\nCom carinho, ${de}.`;
 
       areaMensagem.style.display = "block";
       document.getElementById("mensagem").innerText = mensagem;
