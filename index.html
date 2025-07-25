@@ -82,6 +82,7 @@
       font-size: 1em;
       text-decoration: none;
       margin: 10px 5px;
+      cursor: pointer;
     }
 
     .botao-whatsapp {
@@ -153,6 +154,29 @@
     </div>
   </div>
 
+  <!-- Banner afiliado pop-up -->
+  <div id="popupAfiliado" style="display: none; position: fixed; bottom: 20px; right: 20px; z-index: 9999;">
+    <div style="position: relative; width: 220px; border-radius: 12px; box-shadow: 0 0 12px rgba(0,0,0,0.3); overflow: hidden; background: #fff;">
+      
+      <!-- Botão fechar -->
+      <button onclick="fecharBanner()" 
+        style="position: absolute; top: 5px; right: 5px; background: transparent; border: none; font-size: 18px; color: rgb(0, 0, 0); cursor: pointer; z-index: 10;">
+        ✖
+      </button>
+
+      <!-- Imagem com link -->
+      <a href="https://go.hotmart.com/P101019526K" target="_blank" style="display: block; position: relative;">
+        <img src="afiliado.png" alt="Banner Afiliado" style="width: 100%; display: block;">
+        
+        <!-- Botão saiba mais sobre a imagem -->
+        <div style="position: absolute; bottom: 0; left: 0; right: 0; background: rgba(40,167,69,0.9); text-align: center; padding: 8px 0; font-weight: bold; color: white; text-decoration: none;">
+          Saiba mais
+        </div>
+      </a>
+
+    </div>
+  </div>
+
   <script>
     function gerarMensagem() {
       const nomeDestinatario = document.getElementById("nomeDestinatario").value.trim();
@@ -182,8 +206,12 @@
       window.location.href = "/";
     }
 
-    // Exibe mensagem se tiver parâmetros na URL
+    function fecharBanner() {
+      document.getElementById('popupAfiliado').style.display = 'none';
+    }
+
     window.onload = function () {
+      // Mostrar mensagem se vier com nomes na URL
       const urlParams = new URLSearchParams(window.location.search);
       const para = urlParams.get('para');
       const de = urlParams.get('de');
@@ -196,72 +224,12 @@
         document.getElementById("mensagemGerada").innerText = mensagem;
         document.getElementById("cta").style.display = "block";
       }
-    }
+
+      // Mostrar banner afiliado com atraso de 4 segundos
+      setTimeout(() => {
+        document.getElementById('popupAfiliado').style.display = 'block';
+      }, 4000);
+    };
   </script>
-
-<!-- Banner afiliado flutuante com botão X -->
-<div id="bannerAfiliado" style="
-  position: fixed;
-  bottom: 20px;
-  right: 20px;
-  width: 160px;
-  z-index: 9999;
-  border-radius: 10px;
-  box-shadow: 0 0 12px rgba(0,0,0,0.4);
-  overflow: hidden;
-  background: #fff;
-  opacity: 0;
-  transition: opacity 1s ease;
-  display: none;
-">
-  <div onclick="fecharBanner()" style="
-    text-align: right;
-    padding: 5px 8px;
-    cursor: pointer;
-    background: #ff4d4d;
-    color: white;
-    font-weight: bold;
-    font-size: 16px;
-  "> 
-    ×
-  </div>
-  <a href="https://go.hotmart.com/P101019526K" target="_blank">
-    <img src="afiliado.png" alt="Banner Afiliado" style="width: 100%; display: block;">
-  </a>
-</div>
-
-<!-- Banner afiliado com botão "Saiba mais" sobre a imagem e botão de fechar -->
-<div id="popupAfiliado" style="display: none; position: fixed; bottom: 20px; right: 20px; z-index: 9999;">
-  <div style="position: relative; width: 220px; border-radius: 12px; box-shadow: 0 0 12px rgba(0,0,0,0.3); overflow: hidden;">
-    
-    <!-- Botão fechar -->
-    <button onclick="document.getElementById('popupAfiliado').style.display='none'" 
-      style="position: absolute; top: 5px; right: 5px; background: transparent; border: none; font-size: 18px; color: rgb(0, 0, 0); cursor: pointer; z-index: 10;">
-      ✖
-    </button>
-
-    <!-- Imagem com link -->
-    <a href="https://go.hotmart.com/P101019526K" target="_blank" style="display: block; position: relative;">
-      <img src="afiliado.png" alt="Banner Afiliado" style="width: 100%; display: block;">
-      
-      <!-- Botão saiba mais sobre a imagem -->
-      <div style="position: absolute; bottom: 0; left: 0; right: 0; background: rgba(40,167,69,0.9); text-align: center; padding: 8px 0; font-weight: bold; color: white; text-decoration: none;">
-        Saiba mais
-      </div>
-    </a>
-
-  </div>
-</div>
-
-<script>
-  // Mostra o pop-up 4 segundos após carregar a página
-  window.onload = function () {
-    setTimeout(() => {
-      document.getElementById('popupAfiliado').style.display = 'block';
-    }, 4000);
-  };
-</script>
-
-
 </body>
 </html>
