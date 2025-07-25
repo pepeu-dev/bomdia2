@@ -14,6 +14,7 @@
       background-size: cover;
       background-position: center;
       background-attachment: fixed;
+      background-repeat: no-repeat;
       color: #fff;
     }
 
@@ -28,7 +29,7 @@
 
     .container {
       max-width: 700px;
-      background: rgba(255, 255, 255, 0.1);
+      background: rgba(255, 255, 255, 0.08);
       padding: 30px 25px;
       border-radius: 15px;
       text-align: center;
@@ -36,7 +37,7 @@
     }
 
     h1 {
-      font-size: 2.6em;
+      font-size: 2.4em;
       margin-bottom: 25px;
       color: #ffeb3b;
     }
@@ -46,7 +47,7 @@
       font-size: 1.8em;
       line-height: 1.8;
       margin: 30px 0;
-      background: rgba(255, 255, 255, 0.12);
+      background: rgba(255, 255, 255, 0.1);
       padding: 30px;
       border-radius: 12px;
       animation: fadeIn 1.2s ease-in-out;
@@ -125,10 +126,13 @@
 
       <div id="areaMensagem" style="display: none;">
         <p id="mensagem" class="mensagem-destaque"></p>
+        <p style="margin-top: 30px; font-size: 1.1em; color: #ffe082;">
+          ✨ Você também pode enviar uma mensagem especial de bom dia! Basta preencher seu nome abaixo 👇
+        </p>
       </div>
 
       <div id="areaFormulario">
-        <input type="text" id="nomeDestinatario" placeholder="Nome de quem vai receber a mensagem">
+        <input type="text" id="nomeDestinatario" placeholder="Nome da pessoa que vai receber">
         <input type="text" id="nomeRemetente" placeholder="Seu nome (quem está enviando)">
         <br />
         <button onclick="gerarLink()">Gerar link</button>
@@ -142,8 +146,7 @@
       </div>
 
       <p class="contexto">
-        Crie uma mensagem personalizada para desejar um lindo dia a alguém especial.  
-        Digite o nome da pessoa e o seu, veja a prévia e compartilhe com carinho. ☀️💛
+        Comece o dia com carinho: envie uma mensagem personalizada de bom dia e compartilhe boas energias ☀️🌻
       </p>
     </div>
   </div>
@@ -155,18 +158,18 @@
     }
 
     function gerarLink() {
-      const nomeDestinatario = document.getElementById("nomeDestinatario").value.trim();
+      const nomeDestino = document.getElementById("nomeDestinatario").value.trim();
       const nomeRemetente = document.getElementById("nomeRemetente").value.trim();
 
-      if (!nomeDestinatario || !nomeRemetente) {
+      if (!nomeDestino || !nomeRemetente) {
         alert("Preencha os dois nomes para gerar a mensagem.");
         return;
       }
 
-      const link = `${window.location.origin}${window.location.pathname}?nome=${encodeURIComponent(nomeDestinatario)}&de=${encodeURIComponent(nomeRemetente)}`;
+      const link = `${window.location.origin}${window.location.pathname}?nome=${encodeURIComponent(nomeDestino)}&de=${encodeURIComponent(nomeRemetente)}`;
       document.getElementById("linkGerado").innerHTML = `<a href="${link}" target="_blank">${link}</a>`;
 
-      const mensagem = `${nomeRemetente} preparou uma linda mensagem de bom dia para você:
+      const mensagem = `${nomeRemetente} preparou uma mensagem cheia de luz para você:
 
 ${link}`;
       const whatsappLink = "https://wa.me/?text=" + encodeURIComponent(mensagem);
@@ -175,19 +178,27 @@ ${link}`;
       botao.href = whatsappLink;
       botao.style.display = "inline-block";
 
-      const previewTexto = `☀️ ${nomeRemetente} enviou esta mensagem para você, ${nomeDestinatario}:\n\nBom dia, ${nomeDestinatario}! Que seu dia seja repleto de luz, alegria e muitas conquistas.\n\nCom carinho, ${nomeRemetente}. 💛`;
+      const previewTexto = `☀️ ${nomeRemetente} enviou esta mensagem para você, ${nomeDestino}:
+
+Bom dia, ${nomeDestino}! Que sua manhã seja iluminada, seu coração tranquilo e seu dia repleto de alegrias. Que Deus abençoe cada passo seu hoje.
+
+Com carinho, ${nomeRemetente}.`;
       document.getElementById("previewTexto").innerText = previewTexto;
       document.getElementById("previsualizacao").style.display = "block";
     }
 
-    const nomeDestinatarioURL = getParametroURL("nome");
-    const nomeRemetenteURL = getParametroURL("de");
-    if (nomeDestinatarioURL && nomeRemetenteURL) {
-      const nomeDestinatario = decodeURIComponent(nomeDestinatarioURL);
-      const nomeRemetente = decodeURIComponent(nomeRemetenteURL);
+    const nomeURL = getParametroURL("nome");
+    const deURL = getParametroURL("de");
+    if (nomeURL && deURL) {
+      const nomeDestino = decodeURIComponent(nomeURL);
+      const nomeRemetente = decodeURIComponent(deURL);
       const areaMensagem = document.getElementById("areaMensagem");
 
-      const mensagem = `☀️ ${nomeRemetente} enviou esta mensagem para você, ${nomeDestinatario}:\n\nBom dia, ${nomeDestinatario}! Que seu dia seja repleto de luz, alegria e muitas conquistas.\n\nCom carinho, ${nomeRemetente}. 💛`;
+      const mensagem = `☀️ ${nomeRemetente} enviou esta mensagem para você, ${nomeDestino}:
+
+Bom dia, ${nomeDestino}! Que sua manhã seja iluminada, seu coração tranquilo e seu dia repleto de alegrias. Que Deus abençoe cada passo seu hoje.
+
+Com carinho, ${nomeRemetente}.`;
 
       areaMensagem.style.display = "block";
       document.getElementById("mensagem").innerText = mensagem;
