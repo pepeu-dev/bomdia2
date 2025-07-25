@@ -5,7 +5,6 @@
   <meta name="viewport" content="width=device-width, initial-scale=1.0"/>
   <title>Mensagem de Bom Dia</title>
   <link href="https://fonts.googleapis.com/css2?family=Rubik&family=Playfair+Display:wght@500&display=swap" rel="stylesheet">
-
   <style>
     body {
       font-family: 'Rubik', sans-serif;
@@ -141,6 +140,13 @@
         <button onclick="reiniciar()" class="botao-link botao-alterar">✏️ Trocar nomes</button>
       </div>
 
+      <div id="cta" style="display:none; margin-top: 20px;">
+        <p class="contexto">
+          Quer criar uma mensagem personalizada para alguém?<br>
+          <a href="/" style="color: #ffeb3b;">Clique aqui</a> 🌞
+        </p>
+      </div>
+
       <p class="contexto">
         Após gerar sua mensagem, você poderá compartilhá-la no WhatsApp com apenas um clique!
       </p>
@@ -163,15 +169,33 @@
       document.getElementById("formulario").style.display = "none";
       document.getElementById("resultado").style.display = "block";
 
-      const whatsappLink = `https://wa.me/?text=${encodeURIComponent(mensagem)}`;
+      const urlBase = window.location.origin;
+      const urlCompleta = `${urlBase}?para=${encodeURIComponent(nomeDestinatario)}&de=${encodeURIComponent(nomeRemetente)}`;
+
+      const textoWhatsapp = `${nomeRemetente} enviou uma mensagem de bom dia especial para você! \n\nToque para ver: ${urlCompleta}`;
+      const whatsappLink = `https://wa.me/?text=${encodeURIComponent(textoWhatsapp)}`;
+
       document.getElementById("botaoWhatsapp").href = whatsappLink;
     }
 
     function reiniciar() {
-      document.getElementById("nomeDestinatario").value = "";
-      document.getElementById("nomeRemetente").value = "";
-      document.getElementById("formulario").style.display = "block";
-      document.getElementById("resultado").style.display = "none";
+      window.location.href = "/";
+    }
+
+    // Exibe mensagem se tiver parâmetros na URL
+    window.onload = function () {
+      const urlParams = new URLSearchParams(window.location.search);
+      const para = urlParams.get('para');
+      const de = urlParams.get('de');
+
+      if (para && de) {
+        const mensagem = `☀️ Bom dia, ${para}!\n\nDesejo que seu dia seja repleto de paz, alegria e bênçãos. Que cada momento de hoje seja iluminado com esperança e sorrisos sinceros.\n\nCom carinho,\n${de} 🌻`;
+
+        document.getElementById("formulario").style.display = "none";
+        document.getElementById("resultado").style.display = "block";
+        document.getElementById("mensagemGerada").innerText = mensagem;
+        document.getElementById("cta").style.display = "block";
+      }
     }
   </script>
 </body>
