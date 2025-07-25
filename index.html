@@ -230,23 +230,36 @@
   </a>
 </div>
 
-<script>
-  // Exibe o banner após 4 segundos
-  setTimeout(() => {
-    const banner = document.getElementById("bannerAfiliado");
-    banner.style.display = "block";
-    setTimeout(() => {
-      banner.style.opacity = "1";
-    }, 50); // Pequeno delay para ativar a transição
-  }, 4000);
+<!-- Banner afiliado com botão "Saiba mais" sobre a imagem e botão de fechar -->
+<div id="popupAfiliado" style="display: none; position: fixed; bottom: 20px; right: 20px; z-index: 9999;">
+  <div style="position: relative; width: 220px; border-radius: 12px; box-shadow: 0 0 12px rgba(0,0,0,0.3); overflow: hidden;">
+    
+    <!-- Botão fechar -->
+    <button onclick="document.getElementById('popupAfiliado').style.display='none'" 
+      style="position: absolute; top: 5px; right: 5px; background: transparent; border: none; font-size: 18px; color: rgb(0, 0, 0); cursor: pointer; z-index: 10;">
+      ✖
+    </button>
 
-  function fecharBanner() {
-    const banner = document.getElementById("bannerAfiliado");
-    banner.style.opacity = "0";
+    <!-- Imagem com link -->
+    <a href="https://go.hotmart.com/P101019526K" target="_blank" style="display: block; position: relative;">
+      <img src="afiliado.png" alt="Banner Afiliado" style="width: 100%; display: block;">
+      
+      <!-- Botão saiba mais sobre a imagem -->
+      <div style="position: absolute; bottom: 0; left: 0; right: 0; background: rgba(40,167,69,0.9); text-align: center; padding: 8px 0; font-weight: bold; color: white; text-decoration: none;">
+        Saiba mais
+      </div>
+    </a>
+
+  </div>
+</div>
+
+<script>
+  // Mostra o pop-up 4 segundos após carregar a página
+  window.onload = function () {
     setTimeout(() => {
-      banner.style.display = "none";
-    }, 500);
-  }
+      document.getElementById('popupAfiliado').style.display = 'block';
+    }, 4000);
+  };
 </script>
 
 
