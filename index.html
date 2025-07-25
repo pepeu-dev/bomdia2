@@ -18,12 +18,13 @@
     }
 
     .overlay {
-      background: rgba(0, 0, 0, 0.75);
+      background: rgba(0, 0, 0, 0.7);
       min-height: 100vh;
       padding: 40px 20px;
       display: flex;
       align-items: center;
       justify-content: center;
+      flex-direction: column;
     }
 
     .container {
@@ -43,25 +44,36 @@
 
     .mensagem-destaque {
       font-family: 'Playfair Display', serif;
-      font-size: 1.6em;
+      font-size: 1.8em;
       line-height: 1.6;
       margin: 30px 0;
       background: rgba(255, 255, 255, 0.1);
       padding: 30px;
       border-radius: 12px;
-      animation: fadeIn 1.2s ease-in-out;
+      animation: fadeIn 1s ease-in-out;
       box-shadow: 0 0 14px #ffc107cc;
+    }
+
+    .convite-criar {
+      margin-top: 20px;
+      font-size: 1.1em;
+      color: #ffeb3b;
+      background: rgba(255, 255, 255, 0.1);
+      padding: 15px 20px;
+      border-radius: 10px;
+      box-shadow: 0 0 10px #fff17688;
+      animation: pulse 2s infinite;
+    }
+
+    @keyframes pulse {
+      0% { transform: scale(1); }
+      50% { transform: scale(1.02); }
+      100% { transform: scale(1); }
     }
 
     @keyframes fadeIn {
       from { opacity: 0; transform: translateY(20px); }
       to { opacity: 1; transform: translateY(0); }
-    }
-
-    .contexto {
-      font-size: 1em;
-      margin-top: 30px;
-      color: #dfe6e9;
     }
 
     input[type="text"] {
@@ -88,29 +100,34 @@
       background: #008e76;
     }
 
+    #linkGerado {
+      margin-top: 20px;
+      word-break: break-word;
+      color: #aed581;
+    }
+
     #botaoWhatsapp {
       display: none;
       margin-top: 20px;
-      padding: 14px 24px;
+      padding: 12px 20px;
       background: #25D366;
       color: white;
       text-decoration: none;
-      border-radius: 10px;
+      border-radius: 8px;
       font-weight: bold;
-      font-size: 1.1em;
       display: inline-block;
+      animation: none;
     }
 
-    .shake {
-      animation: shake 0.6s ease-in-out 2;
+    #botaoWhatsapp.tremor {
+      animation: tremor 1s infinite;
     }
 
-    @keyframes shake {
-      0% { transform: translateX(0); }
-      25% { transform: translateX(-5px); }
-      50% { transform: translateX(5px); }
-      75% { transform: translateX(-5px); }
-      100% { transform: translateX(0); }
+    @keyframes tremor {
+      0%, 100% { transform: translateX(0); }
+      25% { transform: translateX(-4px); }
+      50% { transform: translateX(4px); }
+      75% { transform: translateX(-4px); }
     }
 
     #previsualizacao {
@@ -132,13 +149,17 @@
 
       <div id="areaMensagem" style="display: none;">
         <p id="mensagem" class="mensagem-destaque"></p>
+        <p class="convite-criar">
+          💡 Gostou da mensagem? Você também pode criar uma homenagem personalizada e enviar para alguém especial. Role para baixo e experimente! ✨
+        </p>
       </div>
 
       <div id="areaFormulario">
         <input type="text" id="nomeDestinatario" placeholder="Nome de quem vai receber">
         <input type="text" id="nomeRemetente" placeholder="Seu nome (quem está enviando)">
         <br />
-        <button onclick="gerarLink()">Gerar mensagem</button>
+        <button onclick="gerarLink()">Gerar link</button>
+        <p id="linkGerado"></p>
         <a id="botaoWhatsapp" target="_blank">📤 Compartilhar no WhatsApp</a>
 
         <div id="previsualizacao">
@@ -146,10 +167,6 @@
           <p id="previewTexto" class="mensagem-destaque"></p>
         </div>
       </div>
-
-      <p class="contexto">
-        Envie uma mensagem positiva para alguém especial e ajude a espalhar bons sentimentos logo pela manhã. 🌞🌻
-      </p>
     </div>
   </div>
 
@@ -160,40 +177,38 @@
     }
 
     function gerarLink() {
-      const nomeDestino = document.getElementById("nomeDestinatario").value.trim();
+      const nomeDestinatario = document.getElementById("nomeDestinatario").value.trim();
       const nomeRemetente = document.getElementById("nomeRemetente").value.trim();
 
-      if (!nomeDestino || !nomeRemetente) {
+      if (!nomeDestinatario || !nomeRemetente) {
         alert("Preencha os dois nomes para gerar a mensagem.");
         return;
       }
 
-      const link = `${window.location.origin}${window.location.pathname}?nome=${encodeURIComponent(nomeDestino)}&de=${encodeURIComponent(nomeRemetente)}`;
-      const mensagem = `${nomeRemetente} preparou com carinho esta mensagem especial de bom dia para você:\n\n${link}`;
+      const link = `${window.location.origin}${window.location.pathname}?para=${encodeURIComponent(nomeDestinatario)}&de=${encodeURIComponent(nomeRemetente)}`;
+      document.getElementById("linkGerado").innerHTML = `<a href="${link}" target="_blank">${link}</a>`;
+
+      const mensagem = `${nomeRemetente} preparou uma mensagem de bom dia para você:\n\n${link}`;
       const whatsappLink = "https://wa.me/?text=" + encodeURIComponent(mensagem);
 
       const botao = document.getElementById("botaoWhatsapp");
       botao.href = whatsappLink;
       botao.style.display = "inline-block";
+      botao.classList.add("tremor");
 
-      // Efeito de destaque
-      botao.classList.remove("shake");
-      void botao.offsetWidth;
-      botao.classList.add("shake");
-
-      const previewTexto = `☀️ ${nomeRemetente} enviou esta mensagem para você, ${nomeDestino}:\n\nQue seu dia seja cheio de alegria, luz e coisas boas! Que nunca falte paz, amor e esperança no seu caminho. 🌻\n\nCom carinho, ${nomeRemetente}.`;
+      const previewTexto = `☀️ Bom dia, ${nomeDestinatario}!\n\nQue o seu dia seja iluminado, cheio de paz, amor e muitos sorrisos. Nunca se esqueça do quanto você é especial!\n\nCom carinho, ${nomeRemetente}.`;
       document.getElementById("previewTexto").innerText = previewTexto;
       document.getElementById("previsualizacao").style.display = "block";
     }
 
-    const nomeURL = getParametroURL("nome");
-    const deURL = getParametroURL("de");
-    if (nomeURL && deURL) {
-      const nome = decodeURIComponent(nomeURL);
-      const de = decodeURIComponent(deURL);
+    const nomePara = getParametroURL("para");
+    const nomeDe = getParametroURL("de");
+    if (nomePara && nomeDe) {
+      const nomeDestinatario = decodeURIComponent(nomePara);
+      const nomeRemetente = decodeURIComponent(nomeDe);
       const areaMensagem = document.getElementById("areaMensagem");
 
-      const mensagem = `☀️ ${de} enviou esta mensagem para você, ${nome}:\n\nQue seu dia seja cheio de alegria, luz e coisas boas! Que nunca falte paz, amor e esperança no seu caminho. 🌻\n\nCom carinho, ${de}.`;
+      const mensagem = `☀️ Bom dia, ${nomeDestinatario}!\n\nQue o seu dia seja iluminado, cheio de paz, amor e muitos sorrisos. Nunca se esqueça do quanto você é especial!\n\nCom carinho, ${nomeRemetente}.`;
 
       areaMensagem.style.display = "block";
       document.getElementById("mensagem").innerText = mensagem;
