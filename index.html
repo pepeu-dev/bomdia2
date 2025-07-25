@@ -5,6 +5,7 @@
   <meta name="viewport" content="width=device-width, initial-scale=1.0"/>
   <title>Mensagem de Bom Dia</title>
   <link href="https://fonts.googleapis.com/css2?family=Rubik&family=Playfair+Display:wght@500&display=swap" rel="stylesheet">
+
   <style>
     body {
       font-family: 'Rubik', sans-serif;
@@ -24,7 +25,6 @@
       display: flex;
       align-items: center;
       justify-content: center;
-      flex-direction: column;
     }
 
     .container {
@@ -38,37 +38,27 @@
 
     h1 {
       font-size: 2.4em;
-      margin-bottom: 25px;
+      margin-bottom: 15px;
       color: #ffeb3b;
+    }
+
+    .intro {
+      font-size: 1.1em;
+      margin-bottom: 30px;
+      color: #dfe6e9;
     }
 
     .mensagem-destaque {
       font-family: 'Playfair Display', serif;
-      font-size: 1.8em;
+      font-size: 1.7em;
       line-height: 1.6;
       margin: 30px 0;
       background: rgba(255, 255, 255, 0.1);
       padding: 30px;
       border-radius: 12px;
-      animation: fadeIn 1s ease-in-out;
+      animation: fadeIn 1.2s ease-in-out;
       box-shadow: 0 0 14px #ffc107cc;
-    }
-
-    .convite-criar {
-      margin-top: 20px;
-      font-size: 1.1em;
-      color: #ffeb3b;
-      background: rgba(255, 255, 255, 0.1);
-      padding: 15px 20px;
-      border-radius: 10px;
-      box-shadow: 0 0 10px #fff17688;
-      animation: pulse 2s infinite;
-    }
-
-    @keyframes pulse {
-      0% { transform: scale(1); }
-      50% { transform: scale(1.02); }
-      100% { transform: scale(1); }
+      white-space: pre-wrap;
     }
 
     @keyframes fadeIn {
@@ -85,59 +75,45 @@
       font-size: 1em;
     }
 
-    button {
+    .botao-link {
+      display: inline-block;
       padding: 12px 25px;
-      background: #00bfa5;
-      border: none;
-      color: white;
       border-radius: 8px;
-      cursor: pointer;
       font-weight: bold;
       font-size: 1em;
+      text-decoration: none;
+      margin: 10px 5px;
     }
 
-    button:hover {
-      background: #008e76;
-    }
-
-    #linkGerado {
-      margin-top: 20px;
-      word-break: break-word;
-      color: #aed581;
-    }
-
-    #botaoWhatsapp {
-      display: none;
-      margin-top: 20px;
-      padding: 12px 20px;
+    .botao-whatsapp {
       background: #25D366;
       color: white;
-      text-decoration: none;
-      border-radius: 8px;
-      font-weight: bold;
-      display: inline-block;
-      animation: none;
+      border: none;
     }
 
-    #botaoWhatsapp.tremor {
-      animation: tremor 1s infinite;
+    .botao-alterar {
+      background: #00bfa5;
+      color: white;
+      border: none;
     }
 
-    @keyframes tremor {
-      0%, 100% { transform: translateX(0); }
-      25% { transform: translateX(-4px); }
-      50% { transform: translateX(4px); }
-      75% { transform: translateX(-4px); }
+    .botao-whatsapp:hover {
+      background: #1ebe5d;
     }
 
-    #previsualizacao {
-      display: none;
+    .botao-alterar:hover {
+      background: #009e86;
+    }
+
+    .contexto {
+      font-size: 0.95em;
       margin-top: 30px;
+      color: #dfe6e9;
     }
 
     @media (max-width: 600px) {
       .mensagem-destaque {
-        font-size: 1.4em;
+        font-size: 1.3em;
       }
     }
   </style>
@@ -145,73 +121,57 @@
 <body>
   <div class="overlay">
     <div class="container">
-      <h1>🌻 Mensagem de Bom Dia</h1>
+      <h1>☀️ Mensagem de Bom Dia</h1>
+      <p class="intro">
+        Crie uma mensagem personalizada para desejar um bom dia especial a alguém! <br>
+        É rápido, gratuito e feito com carinho 🌻
+      </p>
 
-      <div id="areaMensagem" style="display: none;">
-        <p id="mensagem" class="mensagem-destaque"></p>
-        <p class="convite-criar">
-          💡 Gostou da mensagem? Você também pode criar uma homenagem personalizada e enviar para alguém especial. Role para baixo e experimente! ✨
-        </p>
-      </div>
-
-      <div id="areaFormulario">
+      <div id="formulario">
         <input type="text" id="nomeDestinatario" placeholder="Nome de quem vai receber">
-        <input type="text" id="nomeRemetente" placeholder="Seu nome (quem está enviando)">
-        <br />
-        <button onclick="gerarLink()">Gerar link</button>
-        <p id="linkGerado"></p>
-        <a id="botaoWhatsapp" target="_blank">📤 Compartilhar no WhatsApp</a>
-
-        <div id="previsualizacao">
-          <h2 style="color: #ffd54f; margin-top: 40px;">Pré-visualização da mensagem:</h2>
-          <p id="previewTexto" class="mensagem-destaque"></p>
-        </div>
+        <input type="text" id="nomeRemetente" placeholder="Seu nome (quem envia)">
+        <br>
+        <button onclick="gerarMensagem()" class="botao-link botao-alterar">Gerar Mensagem</button>
       </div>
+
+      <div id="resultado" style="display:none;">
+        <p id="mensagemGerada" class="mensagem-destaque"></p>
+        <a id="botaoWhatsapp" target="_blank" class="botao-link botao-whatsapp">📤 Compartilhar no WhatsApp</a>
+        <br>
+        <button onclick="reiniciar()" class="botao-link botao-alterar">✏️ Trocar nomes</button>
+      </div>
+
+      <p class="contexto">
+        Após gerar sua mensagem, você poderá compartilhá-la no WhatsApp com apenas um clique!
+      </p>
     </div>
   </div>
 
   <script>
-    function getParametroURL(nome) {
-      const params = new URLSearchParams(window.location.search);
-      return params.get(nome);
-    }
-
-    function gerarLink() {
+    function gerarMensagem() {
       const nomeDestinatario = document.getElementById("nomeDestinatario").value.trim();
       const nomeRemetente = document.getElementById("nomeRemetente").value.trim();
 
       if (!nomeDestinatario || !nomeRemetente) {
-        alert("Preencha os dois nomes para gerar a mensagem.");
+        alert("Preencha os dois nomes para continuar.");
         return;
       }
 
-      const link = `${window.location.origin}${window.location.pathname}?para=${encodeURIComponent(nomeDestinatario)}&de=${encodeURIComponent(nomeRemetente)}`;
-      document.getElementById("linkGerado").innerHTML = `<a href="${link}" target="_blank">${link}</a>`;
+      const mensagem = `☀️ Bom dia, ${nomeDestinatario}!\n\nDesejo que seu dia seja repleto de paz, alegria e bênçãos. Que cada momento de hoje seja iluminado com esperança e sorrisos sinceros.\n\nCom carinho,\n${nomeRemetente} 🌻`;
 
-      const mensagem = `${nomeRemetente} preparou uma mensagem de bom dia para você:\n\n${link}`;
-      const whatsappLink = "https://wa.me/?text=" + encodeURIComponent(mensagem);
+      document.getElementById("mensagemGerada").innerText = mensagem;
+      document.getElementById("formulario").style.display = "none";
+      document.getElementById("resultado").style.display = "block";
 
-      const botao = document.getElementById("botaoWhatsapp");
-      botao.href = whatsappLink;
-      botao.style.display = "inline-block";
-      botao.classList.add("tremor");
-
-      const previewTexto = `☀️ Bom dia, ${nomeDestinatario}!\n\nQue o seu dia seja iluminado, cheio de paz, amor e muitos sorrisos. Nunca se esqueça do quanto você é especial!\n\nCom carinho, ${nomeRemetente}.`;
-      document.getElementById("previewTexto").innerText = previewTexto;
-      document.getElementById("previsualizacao").style.display = "block";
+      const whatsappLink = `https://wa.me/?text=${encodeURIComponent(mensagem)}`;
+      document.getElementById("botaoWhatsapp").href = whatsappLink;
     }
 
-    const nomePara = getParametroURL("para");
-    const nomeDe = getParametroURL("de");
-    if (nomePara && nomeDe) {
-      const nomeDestinatario = decodeURIComponent(nomePara);
-      const nomeRemetente = decodeURIComponent(nomeDe);
-      const areaMensagem = document.getElementById("areaMensagem");
-
-      const mensagem = `☀️ Bom dia, ${nomeDestinatario}!\n\nQue o seu dia seja iluminado, cheio de paz, amor e muitos sorrisos. Nunca se esqueça do quanto você é especial!\n\nCom carinho, ${nomeRemetente}.`;
-
-      areaMensagem.style.display = "block";
-      document.getElementById("mensagem").innerText = mensagem;
+    function reiniciar() {
+      document.getElementById("nomeDestinatario").value = "";
+      document.getElementById("nomeRemetente").value = "";
+      document.getElementById("formulario").style.display = "block";
+      document.getElementById("resultado").style.display = "none";
     }
   </script>
 </body>
